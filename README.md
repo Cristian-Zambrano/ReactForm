@@ -1,50 +1,98 @@
-# React + TypeScript + Vite
+# 📋 Custom Form with React Hook Form & Zod
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+¡Bienvenido! 🚀 Este repositorio contiene un formulario personalizado construido con **React Hook Form** y **Zod** para la validación. Es un proyecto simple pero poderoso que demuestra cómo gestionar formularios en React de manera eficiente.
 
-Currently, two official plugins are available:
+## 📌 Tecnologías Utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ⚛️ **React** - Biblioteca para la construcción de interfaces de usuario
+- 🪝 **React Hook Form** - Manejo eficiente de formularios en React
+- ✅ **Zod** - Librería para la validación de esquemas
+- 🎨 **CSS** - Estilización del formulario
 
-## Expanding the ESLint configuration
+## 📂 Estructura del Proyecto
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+📦 src
+ ┣ 📂 components
+ ┃ ┣ 📂 CustomForm
+ ┃ ┃ ┣ 📜 CustomForm.tsx
+ ┃ ┃ ┣ 📜 CustomForm.css
+ ┃ ┣ 📜 CustomInput.tsx
+ ┃ ┣ 📜 CustomInput.css
+ ┣ 📂 models
+ ┃ ┣ 📜 schema.ts
+ ┣ 📜 App.tsx
+ ┣ 📜 App.css
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 🚀 Instalación y Uso
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Sigue estos pasos para ejecutar el proyecto en tu entorno local:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+1️⃣ Clona este repositorio:
+```bash
+ git clone https://github.com/tu-usuario/custom-form.git
 ```
+
+2️⃣ Ingresa al directorio del proyecto:
+```bash
+ cd custom-form
+```
+
+3️⃣ Instala las dependencias:
+```bash
+ npm install
+```
+
+4️⃣ Inicia la aplicación:
+```bash
+ npm run dev
+```
+
+## 🛠️ Funcionamiento del Formulario
+
+🔹 Se usa `useForm` de **React Hook Form** para manejar el estado del formulario.
+🔹 `Zod` se encarga de la validación de los datos ingresados.
+🔹 Los campos incluyen **name, email, password y confirmPassword**.
+🔹 Se muestran mensajes de error cuando los datos ingresados no cumplen con las reglas.
+
+### 📜 Código Destacado
+
+#### 📌 Definición del Schema con Zod
+```typescript
+import { z } from "zod";
+
+export const schema = z.object({
+    name: z.string().min(3, 'Ingrese un nombre válido'),
+    email: z.string().email('Ingrese un email válido').min(3, 'Ingrese un email válido'),
+    password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
+    confirmPassword: z.string().min(6, 'La contraseña de confirmacion debe tener al menos 6 caracteres')
+}).refine(data => data.password === data.confirmPassword, {
+    message: 'Las contraseñas no coinciden',    
+    path: ['confirmPassword']
+});
+```
+
+#### 📌 Formulario con React Hook Form
+```typescript
+const { control, handleSubmit, formState: { errors } } = useForm<FormValues>({
+    resolver: zodResolver(schema)
+});
+```
+
+## 🎨 Capturas de Pantalla
+### 👁️ Como se ve el formulario (estilos sencillos)
+![image](https://github.com/user-attachments/assets/46adb568-8dca-48c3-8030-7fc8360c6c7c)
+
+
+## 📌 Contribuciones
+
+Si deseas mejorar este proyecto, ¡las contribuciones son bienvenidas! 🛠️ Puedes hacer un **fork**, crear una nueva rama y enviar un **pull request**.
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia MIT. 📜
+
+---
+_Hecho con ❤️ y código limpio._
+
